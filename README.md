@@ -1,1 +1,2 @@
 # scrabble
+something happened
