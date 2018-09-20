@@ -11,9 +11,9 @@ ScrabbleGame 和 ScrabblePlayer中的一些逻辑有所更改
 系统的大多exception都没有handle
 
 一般流程为：
-play
-input *n ：输入字母 
-voteword :选择要投票的单词
-vote：投票 由于只有一个玩家，投票完自动加分
-pass: 跳过 游戏结束，显示玩家和得分
+1.play
+2.input *n ：输入字母 
+3.voteword :选择要投票的单词
+4.vote：投票 由于只有一个玩家，投票完自动加分
+5.pass: 跳过 游戏结束，显示玩家和得分
 
