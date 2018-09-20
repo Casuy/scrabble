@@ -61,7 +61,7 @@ Here I just extract the possible requirements from the ppt, and I am not sure ab
       - not allowing: game started or full, may put the game invisible to new connected clients
     - Client starting a game -> no limitation, create new threads to handle new games,
     - Client voting on others’ words/ own words -> get and record clients votes, deciding:
-      - if a valid word: removing the word from grid? (not sure), changing user scores.
+      - if a valid word: changing user scores.
       - if not valid: making no changes, game continuing
 
 ## GUI Design
