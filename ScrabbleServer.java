@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 
 /**
-  * @author Kuan Tian
   * 2018-09-20
   */
 

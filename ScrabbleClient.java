@@ -8,7 +8,6 @@ import java.net.UnknownHostException;
 
 
 /**
-  * @author Kuan Tian
   * 2018-09-20
   */
 
