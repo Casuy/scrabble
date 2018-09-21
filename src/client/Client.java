@@ -22,7 +22,7 @@ public class Client extends GUI{
 
         try {
             getRemoteUser(args[0]);
-            log.info("user created.");
+            log.info("User created.");
         } catch (Exception e) {
             e.printStackTrace();
         }
