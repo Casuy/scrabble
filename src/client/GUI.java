@@ -15,18 +15,22 @@ public class GUI extends Application {
         WebEngine engine = webview.getEngine();
         Scene scene = new Scene(webview, 800, 600);
         stage.setScene(scene);
-        stage.setMinHeight(720);
-        stage.setMinWidth(520);
-        stage.setMaxHeight(1280);
-        stage.setMaxWidth(640);
-        stage.setWidth(480);
-        stage.setHeight(640);
+        stage.setMinHeight(580);
+        stage.setMinWidth(800);
+        stage.setMaxHeight(580);
+        stage.setMaxWidth(800);
+        stage.setHeight(580);
+        stage.setWidth(800);
         engine.setJavaScriptEnabled(true);
-//        engine.load("http://localhost:4200");
-        engine.load("https://www.google.com.au");
-//        engine.load(this.getClass().getResource("/Frontend/index.html").toExternalForm());
+
+        engine.load("http://localhost:4200");
+//        engine.load("https://www.google.com.au");
+//        engine.load(this.getClass().getResource("./ui/index.html").toExternalForm());
         engine.getLoadWorker().stateProperty().addListener((ov, oldState, newState) -> {
                     if (newState == Worker.State.SUCCEEDED) {
+                        Client.getAgent().bindEngine(engine);
+                        JSObject win = (JSObject) engine.executeScript("window");
+                        win.setMember("casuyagent", Client.getInstance());
                     }
                 }
         );

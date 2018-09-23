@@ -1,23 +1,38 @@
 package server;
 
 import remote.IUser;
-import remote.IUserList;
+import remote.IUserService;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RemoteUserList extends UnicastRemoteObject implements IUserList {
+public class UserService extends UnicastRemoteObject implements IUserService {
+
+
+    private static UserService svc;
+
+    public static UserService getInstance() {
+        try {
+            if (svc == null) {
+                svc = new UserService();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return svc;
+    }
+
     private List<IUser> userList;
 
-    public RemoteUserList() throws RemoteException {
+    public UserService() throws RemoteException {
         userList = new ArrayList<>();
     }
 
     @Override
-    public boolean isUser(String username) throws RemoteException{
-        for (IUser user: userList) {
+    public boolean isUser(String username) throws RemoteException {
+        for (IUser user : userList) {
             if (username.equals(user.getUsername())) {
                 return true;
             }
@@ -26,8 +41,8 @@ public class RemoteUserList extends UnicastRemoteObject implements IUserList {
     }
 
     @Override
-    public IUser getUser(String username) throws RemoteException{
-        for (IUser user: userList) {
+    public IUser getUser(String username) throws RemoteException {
+        for (IUser user : userList) {
             if (username.equals(user.getUsername())) {
                 return user;
             }
@@ -35,7 +50,7 @@ public class RemoteUserList extends UnicastRemoteObject implements IUserList {
         return null;
     }
 
-    public List<IUser> getUserList() throws RemoteException{
+    public List<IUser> getUserList() throws RemoteException {
         return userList;
     }
 
@@ -45,7 +60,7 @@ public class RemoteUserList extends UnicastRemoteObject implements IUserList {
     }
 
     @Override
-    public void removeUser(String username) throws RemoteException{
+    public void removeUser(String username) throws RemoteException {
         if (isUser(username)) {
             userList.remove(getUser(username));
         }
@@ -53,7 +68,7 @@ public class RemoteUserList extends UnicastRemoteObject implements IUserList {
 
     @Override
     public void printUserInfos() throws RemoteException {
-        for (IUser user: userList) {
+        for (IUser user : userList) {
             System.out.println(user.userInfo());
         }
     }

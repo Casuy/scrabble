@@ -4,7 +4,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
-public interface IUserList extends Remote {
+public interface IUserService extends Remote {
 
     boolean isUser(String username) throws RemoteException;
     void addUser(String username) throws RemoteException;

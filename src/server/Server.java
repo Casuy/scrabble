@@ -15,7 +15,6 @@ public class Server {
         try {
             registry = LocateRegistry.createRegistry(port);
             log.info("Registry successed.");
-            registry.list();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -25,8 +24,8 @@ public class Server {
     public static void bind() {
         Registry registry = createRegistry();
         try {
-            RemoteUserList userList = new RemoteUserList();
-            registry.rebind("UserList", userList);
+            registry.rebind("UserService", UserService.getInstance());
+            registry.rebind("LoginService", LoginService.getInstance());
             log.info("Bind successed.");
         } catch (Exception e) {
             e.printStackTrace();

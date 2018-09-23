@@ -1,30 +1,25 @@
 package client;
 
-import javafx.application.Application;
-import remote.IUserList;
 
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-import java.util.logging.Logger;
+public class Client {
+    private static Client agent;
 
-public class Client extends GUI{
-
-    static Logger log = Logger.getLogger("Client log");
-
-    static void getRemoteUser(String username) throws Exception {
-        Registry registry = LocateRegistry.getRegistry("localhost", server.Server.port);
-        IUserList userList = (IUserList) registry.lookup("UserList");
-        userList.addUser(username);
+    public static Client getInstance() {
+        if (agent == null) {
+            agent = new Client();
+        }
+        return agent;
     }
 
-    public static void main(String[] args) {
-//        Application.launch();
+    public static ClientAgent getAgent() {
+        return ClientAgent.getInstance();
+    }
 
-        try {
-            getRemoteUser(args[0]);
-            log.info("User created.");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public ServerService server = ServerService.getInstance();
+    public ClientAgent client = ClientAgent.getInstance();
+
+    public void hello() {
+        System.out.println("hello");
+//        engine.executeScript('window.casuyagent2.hi()')
     }
 }
