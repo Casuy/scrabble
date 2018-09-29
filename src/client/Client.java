@@ -5,6 +5,7 @@ public class Client {
     private static Client agent;
 
     public static Client getInstance() {
+
         if (agent == null) {
             agent = new Client();
         }

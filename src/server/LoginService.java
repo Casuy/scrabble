@@ -13,6 +13,7 @@ import java.util.Map;
 public class LoginService extends UnicastRemoteObject implements ILoginService {
 
     private static LoginService svc;
+    private Map<String, IClientAgent> clients = new HashMap();
 
     static LoginService getInstance() {
         try {
@@ -25,11 +26,8 @@ public class LoginService extends UnicastRemoteObject implements ILoginService {
         return svc;
     }
 
-    private Map<String, IClientAgent> clients = new HashMap();
-
     public LoginService() throws RemoteException {
     }
-
 
     @Override
     public boolean login(String username, String clientHost, int clientPort) throws RemoteException {

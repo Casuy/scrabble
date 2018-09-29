@@ -3,7 +3,6 @@ package client;
 import javafx.scene.web.WebEngine;
 import remote.IClientAgent;
 
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -41,4 +40,5 @@ public class ClientAgent extends UnicastRemoteObject implements IClientAgent {
     public void updateGameState() throws RemoteException {
 
     }
+
 }

@@ -5,13 +5,14 @@ import remote.IUserService;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserService extends UnicastRemoteObject implements IUserService {
 
 
     private static UserService svc;
+    private Map<String, IUser> users;
 
     public static UserService getInstance() {
         try {
@@ -24,52 +25,37 @@ public class UserService extends UnicastRemoteObject implements IUserService {
         return svc;
     }
 
-    private List<IUser> userList;
-
     public UserService() throws RemoteException {
-        userList = new ArrayList<>();
+        this.users = new HashMap<String, IUser>();
     }
 
     @Override
     public boolean isUser(String username) throws RemoteException {
-        for (IUser user : userList) {
-            if (username.equals(user.getUsername())) {
-                return true;
-            }
-        }
-        return false;
+        return users.containsKey(username);
     }
 
     @Override
     public IUser getUser(String username) throws RemoteException {
-        for (IUser user : userList) {
-            if (username.equals(user.getUsername())) {
-                return user;
-            }
+        if (isUser(username)) {
+            return users.get(username);
         }
         return null;
     }
 
-    public List<IUser> getUserList() throws RemoteException {
-        return userList;
+    public Map<String, IUser> getUsers() throws RemoteException {
+        return users;
     }
 
     @Override
     public void addUser(String username) throws RemoteException {
-        userList.add(new RemoteUser(username));
+        users.put(username, new User(username));
     }
 
     @Override
     public void removeUser(String username) throws RemoteException {
         if (isUser(username)) {
-            userList.remove(getUser(username));
+            users.remove(username);
         }
     }
 
-    @Override
-    public void printUserInfos() throws RemoteException {
-        for (IUser user : userList) {
-            System.out.println(user.userInfo());
-        }
-    }
 }

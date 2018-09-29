@@ -23,8 +23,8 @@ public class GUI extends Application {
         stage.setWidth(800);
         engine.setJavaScriptEnabled(true);
 
-        engine.load("http://localhost:4200");
 //        engine.load("https://www.google.com.au");
+        engine.load("http://localhost:4200");
 //        engine.load(this.getClass().getResource("./ui/index.html").toExternalForm());
         engine.getLoadWorker().stateProperty().addListener((ov, oldState, newState) -> {
                     if (newState == Worker.State.SUCCEEDED) {
