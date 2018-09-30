@@ -1,6 +1,5 @@
 package server;
 
-import client.ClientAgent;
 import com.google.gson.Gson;
 import remote.IClientAgent;
 
@@ -112,12 +111,6 @@ public class Room {
         return gson.toJson(this);
     }
 }
-
-//class CIRoom {
-//    int id;
-//    ArrayList<String> users;
-//    ArrayList<String> waitingUsers;
-//}
 
 class CIInvitation {
     int roomId;

@@ -45,11 +45,6 @@ public class ServerService {
         return this.loginService.login(username, clientHost, clientPort);
     }
 
-//    public void prprprcasuy() {
-//        System.out.println("prprppr");
-////        engine.executeScript('window.casuyagent2.hi()')
-//    }
-
     public void createRoom(String username) throws Exception {
         this.gameService.createRoom(username);
     }

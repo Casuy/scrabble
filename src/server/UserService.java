@@ -13,7 +13,7 @@ public class UserService extends UnicastRemoteObject implements IUserService {
 
     private static Gson gson = new Gson();
     private static UserService svc;
-    private Map<String, User> users = new HashMap<String, User>();
+    private Map<String, User> users = new HashMap<>();
     private static LoginService loginService = LoginService.getInstance();
 
     public static UserService getInstance() {

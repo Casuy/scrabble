@@ -14,6 +14,4 @@ public interface IUserService extends Remote {
     void addUser(String username) throws RemoteException;
 
     void removeUser(String username) throws RemoteException;
-//    Map<String, User> getUsers() throws RemoteException;
-//    User getUser(String username) throws RemoteException;
 }
