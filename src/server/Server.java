@@ -26,6 +26,7 @@ public class Server {
         try {
             registry.rebind("UserService", UserService.getInstance());
             registry.rebind("LoginService", LoginService.getInstance());
+            registry.rebind("GameService", GameService.getInstance());
             log.info("Bind successed.");
         } catch (Exception e) {
             e.printStackTrace();
