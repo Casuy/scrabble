@@ -53,8 +53,8 @@ public class UserService extends UnicastRemoteObject implements IUserService {
     @Override
     public void addUser(String username) throws RemoteException {
         users.put(username, new User(username));
-        System.out.println(username);
         pushUserListUpdate();
+        System.out.println(username + " has been added.");
     }
 
     @Override
@@ -68,6 +68,7 @@ public class UserService extends UnicastRemoteObject implements IUserService {
     public void pushUserListUpdate() {
         loginService.getAllClients().forEach(c -> {
             try {
+                System.out.println(toJson());
                 c.updateUserList(toJson());
             } catch (Exception ignored) {
             }

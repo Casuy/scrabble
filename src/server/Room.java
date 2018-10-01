@@ -95,10 +95,10 @@ public class Room {
     void pushRoomStateUpdate() {
         try {
             for (IClientAgent client : loginService.getClientsByUsernames(users)) {
+                System.out.println(toJson());
                 client.updateRoomState(toJson());
             }
         } catch (Exception ignored) {
-            System.out.println(ignored);
         }
     }
 

@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import remote.IGameService;
 import remote.ILoginService;
 import remote.IUserService;
-import server.UserService;
 
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -31,7 +30,7 @@ public class ServerService {
         serverPort = port;
     }
 
-    public boolean login(String username, String clientHost, int clientPort) throws Exception {
+    public void login(String username, String clientHost, int clientPort) throws Exception {
         Registry remoteR = LocateRegistry.getRegistry(serverHost, serverPort);
         this.loginService = (ILoginService) remoteR.lookup("LoginService");
         this.userService = (IUserService) remoteR.lookup("UserService");
@@ -42,7 +41,7 @@ public class ServerService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return this.loginService.login(username, clientHost, clientPort);
+        this.loginService.login(username, clientHost, clientPort);
     }
 
     public void createRoom(String username) throws Exception {

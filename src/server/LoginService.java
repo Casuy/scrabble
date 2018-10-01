@@ -15,7 +15,12 @@ public class LoginService extends UnicastRemoteObject implements ILoginService {
 
     private static LoginService svc;
     private static UserService users = UserService.getInstance();
-    private Map<String, IClientAgent> clients = new HashMap();
+
+    private Map<String, IClientAgent> clients = new HashMap<>();
+
+    public LoginService() throws RemoteException {
+        super();
+    }
 
     static LoginService getInstance() {
         try {
@@ -28,20 +33,15 @@ public class LoginService extends UnicastRemoteObject implements ILoginService {
         return svc;
     }
 
-    public LoginService() throws RemoteException {
-    }
-
     @Override
-    public boolean login(String username, String clientHost, int clientPort) throws RemoteException {
+    public void login(String username, String clientHost, int clientPort) throws RemoteException {
         try {
             Registry registry = LocateRegistry.getRegistry(clientHost, clientPort);
             IClientAgent client = (IClientAgent) registry.lookup("Client");
             clients.put(username, client);
             users.addUser(username);
-            return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
     }
 
@@ -53,22 +53,11 @@ public class LoginService extends UnicastRemoteObject implements ILoginService {
         return clients.get(username);
     }
 
-    public IClientAgent getClientByUser(User user) {
-        return getClientByUsername(user.getUsername());
-    }
 
     public ArrayList<IClientAgent> getClientsByUsernames(ArrayList<String> usernames) {
         ArrayList<IClientAgent> selectedClients = new ArrayList<>();
         for (String username : usernames) {
             selectedClients.add(getClientByUsername(username));
-        }
-        return selectedClients;
-    }
-
-    public ArrayList<IClientAgent> getClientsByUsers(ArrayList<User> users) {
-        ArrayList<IClientAgent> selectedClients = new ArrayList<>();
-        for (User u : users) {
-            selectedClients.add(getClientByUser(u));
         }
         return selectedClients;
     }
