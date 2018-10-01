@@ -21,4 +21,6 @@ public interface IGameService extends Remote {
 
     void gameVote(String username, String[] words) throws RemoteException;
 
+    void gameExit(int roomId) throws RemoteException;
+
 }

@@ -1,94 +1,114 @@
 package server;
 
 import com.google.gson.Gson;
+import remote.IClientAgent;
 import remote.IUserService;
 
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class UserService extends UnicastRemoteObject implements IUserService {
 
+    private static UserService userService;
     private static Gson gson = new Gson();
-    private static UserService svc;
-    private Map<String, User> users = new HashMap<>();
-    private static LoginService loginService = LoginService.getInstance();
+    private static Logger log = Logger.getLogger("UserService Log");
+
+    private ArrayList<User> users = new ArrayList<>();
+    private Map<String, IClientAgent> clients = new HashMap<>();
+
+    public UserService() throws RemoteException {
+        super();
+    }
 
     public static UserService getInstance() {
         try {
-            if (svc == null) {
-                svc = new UserService();
+            if (userService == null) {
+                userService = new UserService();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return svc;
-    }
-
-    public UserService() throws RemoteException {
+        return userService;
     }
 
     @Override
-    public boolean isUser(String username) throws RemoteException {
-        return users.containsKey(username);
-    }
-
-    public User getUser(String username) {
+    public void login(String username, String clientHost, int clientPort) throws RemoteException {
         try {
-
-            if (isUser(username)) {
-                return users.get(username);
-            }
+            Registry registry = LocateRegistry.getRegistry(clientHost, clientPort);
+            IClientAgent client = (IClientAgent) registry.lookup("Client");
+            clients.put(username, client);
+//            addUser(username);
+            User user = new User(username);
+            user.login();
         } catch (Exception e) {
+            e.printStackTrace();
         }
-        return null;
     }
 
-    public Map<String, User> getUsers() throws RemoteException {
+    @Override
+    public void logout(String username) throws RemoteException {
+        clients.remove(username);
+        User u = getUserByUsername(username);
+        if (u != null) {
+            u.logout();
+        }
+    }
+
+//    private void addUser(String username) {
+//        User user = new User(username);
+//        this.users.add(user);
+//        pushUserListUpdate();
+//        log.info("User '" + username + "' has been added.");
+//    }
+//
+//    private void pushUserListUpdate() {
+//        getAllClients().forEach(
+//                client -> {
+//                    try {
+//                        System.out.println(toJson());
+//                        client.updateUserList(toJson());
+//                    } catch (Exception ignored) {
+//                    }
+//                }
+//        );
+//    }
+//
+//    private String toJson() {
+//        return gson.toJson(users);
+//    }
+
+    public ArrayList<User> getUsers() {
         return users;
     }
 
-    @Override
-    public void addUser(String username) throws RemoteException {
-        users.put(username, new User(username));
-        pushUserListUpdate();
-        System.out.println(username + " has been added.");
+    public User getUserByUsername(String username) {
+        return users.stream().filter(
+                user -> user.getName().equals(username)
+        ).findFirst().orElse(null);
     }
 
-    @Override
-    public void removeUser(String username) throws RemoteException {
-        if (isUser(username)) {
-            users.remove(username);
-            pushUserListUpdate();
-        }
+    public ArrayList<IClientAgent> getAllClients() {
+        return new ArrayList<>(clients.values());
     }
 
-    public void pushUserListUpdate() {
-        loginService.getAllClients().forEach(c -> {
-            try {
-                System.out.println(toJson());
-                c.updateUserList(toJson());
-            } catch (Exception ignored) {
-            }
-        });
+    public IClientAgent getClientByUsername(String username) {
+        return clients.get(username);
     }
 
-
-    private String toJson() {
-        ArrayList<CUser> list = new ArrayList<>();
-        users.values().forEach(u -> {
-            CUser user = new CUser();
-            user.name = u.getUsername();
-            list.add(user);
-        });
-        return gson.toJson(list);
+    public ArrayList<IClientAgent> getClientsByUsernames(ArrayList<String> usernames) {
+        ArrayList<IClientAgent> selectedClients = new ArrayList<>();
+        usernames.forEach(
+                username -> {
+                    selectedClients.add(getClientByUsername(username));
+                }
+        );
+        return selectedClients;
     }
 
-
-}
-
-class CUser {
-    String name;
 }
