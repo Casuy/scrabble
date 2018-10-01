@@ -26,10 +26,11 @@ public class Game {
 
     public Game(int id, ArrayList<String> usernames) {
         this.id = id;
+        this.usernames = usernames;
         usernames.forEach(username -> {
             users.add(new GameUser(username));
+            userService.getUserByUsername(username).enterGame();
         });
-        this.usernames = usernames;
         GameUser firstGameUser = users.get(0);
         if (firstGameUser != null) {
             activeUser = firstGameUser.name;
@@ -49,14 +50,15 @@ public class Game {
             }
             setNextTurn();
             pushGameState();
-            log.info(username + " passed.");
+            log.info(username + " has passed.");
             return;
         }
         board[y][x] = letter;
         passCounter = 0;
         vote = GameVote.from(board, y, x);
         pushGameState();
-        log.info(username + " submitted.");
+        log.info(username + " has submitted letter '" + letter
+                + "' in position (" + x + ", " + y + ").");
     }
 
     private void setNextTurn() {
@@ -74,9 +76,12 @@ public class Game {
     }
 
     public void exit() {
-        System.out.println("todo: game exit");
         showResult = true;
+        usernames.forEach(username -> {
+            userService.getUserByUsername(username).leaveGame();
+        });
         pushGameState();
+        log.info("Game in room " + id + " is over.");
     }
 
 

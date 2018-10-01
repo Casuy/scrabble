@@ -28,9 +28,10 @@ public class GameService extends UnicastRemoteObject implements IGameService {
     }
 
     @Override
-    public void createRoom(String username) throws RemoteException {
+    public int createRoom(String username) throws RemoteException {
         Room room = new Room(username);
         rooms.add(room);
+        return room.getId();
     }
 
     @Override

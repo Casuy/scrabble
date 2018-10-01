@@ -56,6 +56,8 @@ public class UserService extends UnicastRemoteObject implements IUserService {
         clients.remove(username);
         User u = getUserByUsername(username);
         if (u != null) {
+            u.leaveGame();
+            u.leaveRoom();
             u.logout();
         }
     }

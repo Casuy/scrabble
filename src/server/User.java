@@ -41,6 +41,16 @@ public class User {
         pushUserListUpdate();
     }
 
+    public void enterGame() {
+        this.inGame = true;
+        pushUserListUpdate();
+    }
+
+    public void leaveGame() {
+        this.inGame = false;
+        pushUserListUpdate();
+    }
+
     private void pushUserListUpdate() {
         userService.getAllClients().forEach(
                 client -> {

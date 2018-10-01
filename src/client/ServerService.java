@@ -19,8 +19,8 @@ public class ServerService {
 
     private IUserService userService;
     private IGameService gameService;
-
     private String username;
+    private int id;
 
     public static ServerService getInstance() {
         if (ssvc == null) {
@@ -51,11 +51,13 @@ public class ServerService {
     }
 
     public void logout() throws Exception {
+        gameService.gameExit(id);
+        gameService.leaveRoom(id, username);
         userService.logout(username);
     }
 
     public void createRoom(String username) throws Exception {
-        gameService.createRoom(username);
+        id = gameService.createRoom(username);
     }
 
     public void leaveRoom(int roomId, String username) throws Exception {
@@ -66,7 +68,17 @@ public class ServerService {
         gameService.roomInvite(roomId, invitor, invitee);
     }
 
+    public void acceptRoomInvitation(int roomId, String invitee) throws Exception {
+        id = roomId;
+        gameService.acceptRoomInvitation(roomId, invitee);
+    }
+
+    public void refuseRoomInvitation(int roomId, String invitee) throws Exception {
+        gameService.refuseRoomInvitation(roomId, invitee);
+    }
+
     public void startGame(int roomId) throws Exception {
+        id = roomId;
         gameService.startGame(roomId);
     }
 
@@ -76,14 +88,6 @@ public class ServerService {
 
     public void gameVote(String username, String wordsJson) throws Exception {
         gameService.gameVote(username, gson.fromJson(wordsJson, String[].class));
-    }
-
-    public void acceptRoomInvitation(int roomId, String invitee) throws Exception {
-        gameService.acceptRoomInvitation(roomId, invitee);
-    }
-
-    public void refuseRoomInvitation(int roomId, String invitee) throws Exception {
-        gameService.refuseRoomInvitation(roomId, invitee);
     }
 
     public void gameExit(int roomId) throws Exception {

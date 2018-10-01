@@ -5,7 +5,7 @@ import java.rmi.RemoteException;
 
 public interface IGameService extends Remote {
 
-    void createRoom(String username) throws RemoteException;
+    int createRoom(String username) throws RemoteException;
 
     void leaveRoom(int roomId, String username) throws RemoteException;
 
