@@ -28,8 +28,8 @@ public class View extends Application {
 
         webEngine.setJavaScriptEnabled(true);
 
-        webEngine.load("http://localhost:4200");
-//        webEngine.load(this.getClass().getResource("/client/ui/index.html").toExternalForm());
+//        webEngine.load("http://localhost:4200");
+        webEngine.load(this.getClass().getResource("./ui/index.html").toExternalForm());
 
         webEngine.getLoadWorker().stateProperty().addListener(
                 (observable, oldState, newState) -> {
@@ -46,7 +46,6 @@ public class View extends Application {
                 try {
                     ServerService.getInstance().logout();
                 } catch (Exception ignore) {
-
                 }
                 System.exit(0);
             }
