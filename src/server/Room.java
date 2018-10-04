@@ -75,7 +75,8 @@ public class Room {
         userService.getClientsByUsernames(users).forEach(client -> {
             try {
                 client.updateRoomState(toJson());
-            } catch (Exception ignored) {
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }

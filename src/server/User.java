@@ -56,7 +56,8 @@ public class User {
                 client -> {
                     try {
                         client.updateUserList(toJson());
-                    } catch (Exception ignored) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
         );

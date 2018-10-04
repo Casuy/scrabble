@@ -34,20 +34,31 @@ public class ServerService {
         this.serverPort = port;
     }
 
-    public void login(String username, String clientHost, int clientPort) throws Exception {
-        this.username = username;
-        Registry serverRegistry = LocateRegistry.getRegistry(serverHost, serverPort);
-        userService = (IUserService) serverRegistry.lookup("UserService");
-        gameService = (IGameService) serverRegistry.lookup("GameService");
+    public int login(String username, String clientHost, int clientPort) {
         try {
-            Registry clientRegistry = LocateRegistry.createRegistry(clientPort);
-            log.info("Client registry successed.");
-            clientRegistry.rebind("Client", ClientAgent.getInstance());
-            log.info("Client bind successed.");
+            this.username = username;
+            Registry serverRegistry = LocateRegistry.getRegistry(serverHost, serverPort);
+            userService = (IUserService) serverRegistry.lookup("UserService");
+            gameService = (IGameService) serverRegistry.lookup("GameService");
+            if (!userService.isUser(username)){
+                try {
+                    Registry clientRegistry = LocateRegistry.createRegistry(clientPort);
+                    log.info("Client registry successed.");
+                    clientRegistry.rebind("Client", ClientAgent.getInstance());
+                    log.info("Client bind successed.");
+                    userService.login(username, clientHost, clientPort);
+                    return 0;
+                } catch (Exception e) {
+                    log.warning(e.getMessage());
+                    return 1;
+                }
+            } else {
+                return 3;
+            }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warning(e.getMessage());
+            return 2;
         }
-        userService.login(username, clientHost, clientPort);
     }
 
     public void logout() throws Exception {

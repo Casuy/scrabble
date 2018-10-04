@@ -38,17 +38,22 @@ public class UserService extends UnicastRemoteObject implements IUserService {
     }
 
     @Override
+    public boolean isUser(String username) throws RemoteException {
+        return clients.containsKey(username);
+    }
+
+    @Override
     public void login(String username, String clientHost, int clientPort) throws RemoteException {
         try {
             Registry registry = LocateRegistry.getRegistry(clientHost, clientPort);
             IClientAgent client = (IClientAgent) registry.lookup("Client");
             clients.put(username, client);
-//            addUser(username);
             User user = new User(username);
             user.login();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
     @Override
@@ -62,31 +67,12 @@ public class UserService extends UnicastRemoteObject implements IUserService {
         }
     }
 
-//    private void addUser(String username) {
-//        User user = new User(username);
-//        this.users.add(user);
-//        pushUserListUpdate();
-//        log.info("User '" + username + "' has been added.");
-//    }
-//
-//    private void pushUserListUpdate() {
-//        getAllClients().forEach(
-//                client -> {
-//                    try {
-//                        System.out.println(toJson());
-//                        client.updateUserList(toJson());
-//                    } catch (Exception ignored) {
-//                    }
-//                }
-//        );
-//    }
-//
-//    private String toJson() {
-//        return gson.toJson(users);
-//    }
-
     public ArrayList<User> getUsers() {
         return users;
+    }
+
+    public Map<String, IClientAgent> getClients() {
+        return clients;
     }
 
     public User getUserByUsername(String username) {
@@ -112,5 +98,6 @@ public class UserService extends UnicastRemoteObject implements IUserService {
         );
         return selectedClients;
     }
+
 
 }

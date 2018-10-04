@@ -73,4 +73,5 @@ public class ClientAgent extends UnicastRemoteObject implements IClientAgent {
         eval(String.format("updateInvitation('%s')", json));
     }
 
+
 }

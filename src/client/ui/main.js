@@ -459,7 +459,7 @@ module.exports = ".login-area {\n  display: flex;\n  flex-flow: column nowrap;\n
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"login-area\">\n  <header style=\"padding: 0; margin-bottom: 38px\">\n    <h2 style=\"font-size: 26px; font-weight: bold\">Scrabble</h2>\n  </header>\n\n  <form (ngSubmit)=\"onSubmit($event, loginForm)\" #loginForm=\"ngForm\">\n    <!-- address -->\n    <div>\n      <div class=\"login-form-tabs\">\n        <span class=\"login-form-tab\"\n              [class.login-form-tab-active]=\"showRemoteConfig==false\"\n              (mousedown)=\"showRemoteConfig=false\">Local</span>\n        <span class=\"login-form-tabs-separator\"> | </span>\n        <span class=\"login-form-tab\"\n              [class.login-form-tab-active]=\"showRemoteConfig==true\"\n              (mousedown)=\"showRemoteConfig=true\">Remote</span>\n      </div>\n      <!-- local address -->\n      <div [hidden]=\"showRemoteConfig\">\n        <div class=\"form-control\">\n          <div class=\"form-control-name\">Local Hostname</div>\n          <input name=\"localHost\" type=\"text\" #lh [ngModel]=\"'localhost'\">\n        </div>\n        <div class=\"form-control\">\n          <div class=\"form-control-name\">Local Port</div>\n          <input name=\"localPort\" type=\"text\" #lp [ngModel]=\"9900\">\n        </div>\n      </div>\n      <!-- remote address -->\n      <div [hidden]=\"!showRemoteConfig\">\n        <div class=\"form-control\">\n          <div class=\"form-control-name\">Remote Hostname</div>\n          <input name=\"remoteHost\" type=\"text\" #rh [ngModel]=\"'localhost'\">\n        </div>\n        <div class=\"form-control\">\n          <div class=\"form-control-name\">Remote Port</div>\n          <input name=\"remotePort\" type=\"text\" #rp [ngModel]=\"9999\">\n        </div>\n      </div>\n    </div>\n\n    <!-- username -->\n    <div class=\"form-control\" style=\"margin-top: 32px\">\n      <div class=\"form-control-name\">Username</div>\n      <input name=\"username\" type=\"text\" #username [placeholder]=\"randomName\" autofocus ngModel>\n    </div>\n    <div class=\"form-control\" style=\"margin-top: 68px\">\n      <button type=\"submit\">Login</button>\n    </div>\n  </form>\n\n</div>\n"
+module.exports = "<div class=\"login-area\">\n  <header style=\"padding: 0; margin-bottom: 38px\">\n    <h2 style=\"font-size: 26px; font-weight: bold\">Scrabble</h2>\n  </header>\n\n  <form (ngSubmit)=\"onSubmit($event, loginForm)\" #loginForm=\"ngForm\">\n    <!-- address -->\n    <div>\n      <div class=\"login-form-tabs\">\n        <span class=\"login-form-tab\"\n              [class.login-form-tab-active]=\"showRemoteConfig==false\"\n              (mousedown)=\"showRemoteConfig=false\">Local</span>\n        <span class=\"login-form-tabs-separator\"> | </span>\n        <span class=\"login-form-tab\"\n              [class.login-form-tab-active]=\"showRemoteConfig==true\"\n              (mousedown)=\"showRemoteConfig=true\">Remote</span>\n      </div>\n      <!-- local address -->\n      <div [hidden]=\"showRemoteConfig\">\n        <div class=\"form-control\">\n          <div class=\"form-control-name\">Local Hostname</div>\n          <input name=\"localHost\" type=\"text\" #lh [ngModel]=\"'localhost'\">\n        </div>\n        <div class=\"form-control\">\n          <div class=\"form-control-name\">Local Port</div>\n          <input name=\"localPort\" type=\"text\" #lp [ngModel]=\"9900\">\n        </div>\n      </div>\n      <!-- remote address -->\n      <div [hidden]=\"!showRemoteConfig\">\n        <div class=\"form-control\">\n          <div class=\"form-control-name\">Remote Hostname</div>\n          <input name=\"remoteHost\" type=\"text\" #rh [ngModel]=\"'localhost'\">\n        </div>\n        <div class=\"form-control\">\n          <div class=\"form-control-name\">Remote Port</div>\n          <input name=\"remotePort\" type=\"text\" #rp [ngModel]=\"9999\">\n        </div>\n      </div>\n    </div>\n\n    <!-- username -->\n    <div class=\"form-control\" style=\"margin-top: 32px\">\n      <div class=\"form-control-name\">Username</div>\n      <input name=\"username\" type=\"text\" #username [placeholder]=\"randomName\" autofocus ngModel>\n    </div>\n\n    <div style=\"font-size: 12px; line-height: 28px; color: #ba4857; height: 56px; margin-top: 8px\">\n      <div [hidden]=\"!rs.loginForm.usernameError\">Username already in use.</div>\n      <div [hidden]=\"!rs.loginForm.clientAddrError\">Illegal client address.</div>\n      <div [hidden]=\"!rs.loginForm.serverError\">Connection failed.</div>\n    </div>\n\n    <div class=\"form-control\" style=\"margin-top: 18px\">\n      <button type=\"submit\">Login</button>\n    </div>\n  </form>\n\n</div>\n"
 
 /***/ }),
 
@@ -511,8 +511,10 @@ var LoginPageComponent = /** @class */ (function () {
         // if (!username) {
         //   username = this.randomName;
         // }
-        this.rs.connectAndLogin(values);
-        this.ps.gotoLobbyPage();
+        var ok = this.rs.connectAndLogin(values);
+        if (ok) {
+            this.ps.gotoLobbyPage();
+        }
     };
     LoginPageComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -851,6 +853,11 @@ var RemoteService = /** @class */ (function () {
         this.ps = ps;
         this.users = [];
         this.gameBoard = new _board__WEBPACK_IMPORTED_MODULE_3__["Board"]();
+        this.loginForm = {
+            usernameError: false,
+            clientAddrError: false,
+            serverError: false
+        };
         this.reactor = new _remoteServiceReactor__WEBPACK_IMPORTED_MODULE_2__["RemoteServiceReactor"](this, ps, zone);
     }
     Object.defineProperty(RemoteService.prototype, "inRoom", {
@@ -905,8 +912,25 @@ var RemoteService = /** @class */ (function () {
         if (this.s) {
             this.username = params.username;
             this.s.bindServer(params.remoteHost, params.remotePort);
-            this.s.login(params.username, params.localHost, params.localPort);
+            var errorCode = this.s.login(params.username, params.localHost, params.localPort);
+            this.loginForm.clientAddrError = false;
+            this.loginForm.serverError = false;
+            this.loginForm.usernameError = false;
+            switch (errorCode) {
+                case 1:
+                    this.loginForm.clientAddrError = true;
+                    break;
+                case 2:
+                    this.loginForm.serverError = true;
+                    break;
+                case 3:
+                    this.loginForm.usernameError = true;
+            }
+            if (errorCode === 0) {
+                return true;
+            }
         }
+        return false;
     };
     RemoteService.prototype.createRoom = function () {
         if (this.s) {

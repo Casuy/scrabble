@@ -1,7 +1,9 @@
 package server;
 
 import com.google.gson.Gson;
+import remote.IClientAgent;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -23,6 +25,19 @@ public class Game {
     private transient int wordACounter = 0;
     private transient int wordBCounter = 0;
     private transient int voterCounter = 0;
+
+
+    public void checkHeartBeat() {
+        while (true) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                log.info("Interrupt");
+                break;
+            }
+        }
+
+    }
 
     public Game(int id, ArrayList<String> usernames) {
         this.id = id;
@@ -125,14 +140,31 @@ public class Game {
     }
 
     private void pushGameState() {
-        userService.getClientsByUsernames(usernames).forEach(
-                c -> {
+        usernames.forEach(username -> {
+            IClientAgent c = userService.getClientByUsername(username);
+            if (c != null) {
+                try {
+                    c.updateGameState(toJson());
+                } catch (Exception e) {
+                    e.printStackTrace();
                     try {
-                        c.updateGameState(toJson());
-                    } catch (Exception ignored) {
+                        userService.logout(username);
+                    } catch (Exception _e) {
+                        _e.printStackTrace();
                     }
                 }
-        );
+            }
+        });
+//        userService.getClientsByUsernames(usernames).forEach(
+//                c -> {
+//                    try {
+//                        c.updateGameState(toJson());
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                        userService.logout(userService.getUsernameByClient(c));
+//                    }
+//                }
+//        );
     }
 
     private String toJson() {
