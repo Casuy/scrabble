@@ -3,7 +3,6 @@ package server;
 import com.google.gson.Gson;
 import remote.IClientAgent;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -26,18 +25,6 @@ public class Game {
     private transient int wordBCounter = 0;
     private transient int voterCounter = 0;
 
-
-    public void checkHeartBeat() {
-        while (true) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                log.info("Interrupt");
-                break;
-            }
-        }
-
-    }
 
     public Game(int id, ArrayList<String> usernames) {
         this.id = id;
@@ -134,8 +121,8 @@ public class Game {
     }
 
     private GameUser getGameUser(String username) {
-        return users.stream().filter(
-                gameUser -> gameUser.name.equals(username)
+        return users.stream().filter(gameUser ->
+                gameUser.name.equals(username)
         ).findFirst().orElse(null);
     }
 
@@ -146,25 +133,11 @@ public class Game {
                 try {
                     c.updateGameState(toJson());
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    try {
-                        userService.logout(username);
-                    } catch (Exception _e) {
-                        _e.printStackTrace();
-                    }
+                    log.warning(e.getMessage());
+                    //todo: remove client
                 }
             }
         });
-//        userService.getClientsByUsernames(usernames).forEach(
-//                c -> {
-//                    try {
-//                        c.updateGameState(toJson());
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                        userService.logout(userService.getUsernameByClient(c));
-//                    }
-//                }
-//        );
     }
 
     private String toJson() {
@@ -239,7 +212,4 @@ class GameVote {
     }
 }
 
-/*
-
- */
 

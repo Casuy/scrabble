@@ -1,7 +1,5 @@
 package server;
 
-import com.sun.tools.javadoc.Start;
-
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.logging.Logger;
@@ -56,11 +54,22 @@ public class Server extends Thread {
     public void run() {
         while (true) {
             try {
-                System.out.println("run");
                 Thread.sleep(1000);
                 heartbeatService.counterIncrement();
                 heartbeatService.getDeadUsernames().forEach(username -> {
-                    System.out.println(username);
+                    log.warning("Connection to user '" + username + "' interrupted.");
+                    try {
+                        User user = userService.getUserByUsername(username);
+                        if (user.getInGameState()) {
+                            gameService.gameExit(user.getId());
+                        }
+                        if (user.getInRoomState()) {
+                            gameService.leaveRoom(user.getId(), username);
+                        }
+                        userService.exit(username);
+                    } catch (Exception e) {
+                        log.warning(e.getMessage());
+                    }
                     userService.getClients().remove(username, userService.getClientByUsername(username));
                 });
             } catch (Exception e) {

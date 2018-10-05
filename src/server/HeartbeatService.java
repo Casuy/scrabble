@@ -22,7 +22,7 @@ public class HeartbeatService extends UnicastRemoteObject implements IHeartbeatS
             if (heartbeatService == null) {
                 heartbeatService = new HeartbeatService();
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return heartbeatService;
@@ -38,11 +38,9 @@ public class HeartbeatService extends UnicastRemoteObject implements IHeartbeatS
     }
 
     public void counterIncrement() {
-        counters.forEach(
-                (k, v) -> {
-                    counters.put(k, v + 1);
-                }
-        );
+        counters.forEach((k, v) -> {
+            counters.put(k, v + 1);
+        });
     }
 
     public ArrayList<String> getDeadUsernames() {
@@ -52,9 +50,9 @@ public class HeartbeatService extends UnicastRemoteObject implements IHeartbeatS
                 deadClients.add(k);
             }
         });
-        for (String temp_name : deadClients) {
-            counters.remove(temp_name);
-        }
+        deadClients.forEach(name -> {
+            counters.remove(name);
+        });
         return deadClients;
     }
 

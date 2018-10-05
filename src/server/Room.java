@@ -23,7 +23,7 @@ public class Room {
     public Room(String creator) {
         this.id = random.nextInt(999999);
         this.users.add(creator);
-        userService.getUserByUsername(creator).enterRoom();
+        userService.getUserByUsername(creator).enterRoom(this.id);
         pushRoomStateUpdate();
         log.info("Room " + id + " has been created by " + creator + ".");
     }
@@ -36,25 +36,21 @@ public class Room {
     }
 
     public void inviteUser(String invitor, String invitee) {
-        Boolean inviteeInRoom = userService.getUserByUsername(invitee).getInRoomState();
-        if (!inviteeInRoom) {
-            IClientAgent client = userService.getClientByUsername(invitee);
-            waitingUsers.add(invitee);
-            try {
-                client.updateInvitation(gson.toJson(new CIInvitation(id, invitor)));
-            } catch (Exception ignored) {
-            }
-            pushRoomStateUpdate();
-            log.info(invitor + " has invited " + invitee + ".");
+        IClientAgent client = userService.getClientByUsername(invitee);
+        waitingUsers.add(invitee);
+        try {
+            client.updateInvitation(gson.toJson(new CIInvitation(id, invitor)));
+        } catch (Exception ignored) {
         }
-        //todo: invitee already in room
+        pushRoomStateUpdate();
+        log.info(invitor + " has invited " + invitee + ".");
     }
 
     public void acceptInvitation(String invitee) {
         waitingUsers.remove(invitee);
         if (!users.contains(invitee)) {
             users.add(invitee);
-            userService.getUserByUsername(invitee).enterRoom();
+            userService.getUserByUsername(invitee).enterRoom(this.id);
             pushRoomStateUpdate();
             log.info(invitee + " has accepted the invitation.");
         }
@@ -72,11 +68,23 @@ public class Room {
 
 
     private void pushRoomStateUpdate() {
-        userService.getClientsByUsernames(users).forEach(client -> {
-            try {
-                client.updateRoomState(toJson());
-            } catch (Exception e) {
-                e.printStackTrace();
+//        userService.getClientsByUsernames(users).forEach(client -> {
+//            try {
+//                client.updateRoomState(toJson());
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        });
+
+        users.forEach(username -> {
+            IClientAgent c = userService.getClientByUsername(username);
+            if (c != null) {
+                try {
+                    c.updateRoomState(toJson());
+                } catch (Exception e) {
+                    log.warning(e.getMessage());
+                    //todo: remove client
+                }
             }
         });
     }

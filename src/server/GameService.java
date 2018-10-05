@@ -68,8 +68,8 @@ public class GameService extends UnicastRemoteObject implements IGameService {
 
     @Override
     public void startGame(int roomId) throws RemoteException {
-        Room r = rooms.stream().filter(
-                room -> (room.getId() == roomId)
+        Room r = rooms.stream().filter(room ->
+                room.getId() == roomId
         ).findFirst().orElse(null);
         if (r != null) {
             r.initGame();
@@ -88,7 +88,6 @@ public class GameService extends UnicastRemoteObject implements IGameService {
     public void gameVote(String username, String[] words) throws RemoteException {
         Game g = getGameByUsername(username);
         if (g != null) {
-            System.out.println(1);
             g.vote(username, words);
         }
     }
@@ -102,14 +101,14 @@ public class GameService extends UnicastRemoteObject implements IGameService {
     }
 
     private Room getRoomById(int roomId) {
-        return rooms.stream().filter(
-                room -> room.getId() == roomId
+        return rooms.stream().filter(room ->
+                room.getId() == roomId
         ).findFirst().orElse(null);
     }
 
     private Room getRoomByUsername(String username) {
-        return rooms.stream().filter(
-                room -> room.getUsers().contains(username)
+        return rooms.stream().filter(room ->
+                room.getUsers().contains(username)
         ).findFirst().orElse(null);
     }
 

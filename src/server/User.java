@@ -14,6 +14,8 @@ public class User {
     private boolean inRoom = false;
     private boolean inGame = false;
 
+    private transient int id = 0;
+
 
     public User(String username) {
         this.name = username;
@@ -28,16 +30,18 @@ public class User {
     public void logout() {
         userService.getUsers().remove(this);
         pushUserListUpdate();
-        log.info("User '"+name+"' has logged out.");
+        log.info("User '" + name + "' has logged out.");
     }
 
-    public void enterRoom() {
+    public void enterRoom(int id) {
         this.inRoom = true;
+        this.id = id;
         pushUserListUpdate();
     }
 
     public void leaveRoom() {
         this.inRoom = false;
+        this.id = 0;
         pushUserListUpdate();
     }
 
@@ -52,15 +56,14 @@ public class User {
     }
 
     private void pushUserListUpdate() {
-        userService.getAllClients().forEach(
-                client -> {
-                    try {
-                        client.updateUserList(toJson());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-        );
+        userService.getAllClients().forEach(client -> {
+            try {
+                client.updateUserList(toJson());
+            } catch (Exception e) {
+                log.warning(e.getMessage());
+                //todo: remove client
+            }
+        });
     }
 
     private String toJson() {
@@ -71,8 +74,16 @@ public class User {
         return name;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public Boolean getInRoomState() {
         return inRoom;
+    }
+
+    public Boolean getInGameState() {
+        return inGame;
     }
 
 }

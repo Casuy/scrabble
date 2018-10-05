@@ -68,16 +68,11 @@ public class ServerService extends Thread {
     public void logout() throws Exception {
         gameService.gameExit(id);
         gameService.leaveRoom(id, username);
-        userService.logout(username);
+        userService.exit(username);
     }
 
-    public void createRoom(String username) {
-        try {
-            id = gameService.createRoom(username);
-        } catch (Exception e) {
-            e.printStackTrace();
-            // todo: return error code, disconnection to server
-        }
+    public void createRoom(String username) throws Exception {
+        id = gameService.createRoom(username);
     }
 
     public void leaveRoom(int roomId, String username) throws Exception {
@@ -121,7 +116,9 @@ public class ServerService extends Thread {
                 Thread.sleep(1000);
                 heartbeatService.clearCounter(username);
             } catch (Exception e) {
-                e.printStackTrace();
+                log.warning(e.getMessage());
+                break;
+                //todo: show error msg
             }
         }
 

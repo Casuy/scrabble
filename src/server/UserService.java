@@ -57,7 +57,7 @@ public class UserService extends UnicastRemoteObject implements IUserService {
     }
 
     @Override
-    public void logout(String username) throws RemoteException {
+    public void exit(String username) throws RemoteException {
         clients.remove(username);
         User u = getUserByUsername(username);
         if (u != null) {
