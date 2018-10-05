@@ -2,13 +2,14 @@ package client;
 
 import com.google.gson.Gson;
 import remote.IGameService;
+import remote.IHeartbeatService;
 import remote.IUserService;
 
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.logging.Logger;
 
-public class ServerService {
+public class ServerService extends Thread {
 
     private static ServerService ssvc;
     private static Gson gson = new Gson();
@@ -19,6 +20,7 @@ public class ServerService {
 
     private IUserService userService;
     private IGameService gameService;
+    private IHeartbeatService heartbeatService;
     private String username;
     private int id;
 
@@ -40,13 +42,15 @@ public class ServerService {
             Registry serverRegistry = LocateRegistry.getRegistry(serverHost, serverPort);
             userService = (IUserService) serverRegistry.lookup("UserService");
             gameService = (IGameService) serverRegistry.lookup("GameService");
-            if (!userService.isUser(username)){
+            heartbeatService = (IHeartbeatService) serverRegistry.lookup("HeartbeatService");
+            if (!userService.isUser(username)) {
                 try {
                     Registry clientRegistry = LocateRegistry.createRegistry(clientPort);
                     log.info("Client registry successed.");
                     clientRegistry.rebind("Client", ClientAgent.getInstance());
                     log.info("Client bind successed.");
                     userService.login(username, clientHost, clientPort);
+                    this.start();
                     return 0;
                 } catch (Exception e) {
                     log.warning(e.getMessage());
@@ -67,8 +71,13 @@ public class ServerService {
         userService.logout(username);
     }
 
-    public void createRoom(String username) throws Exception {
-        id = gameService.createRoom(username);
+    public void createRoom(String username) {
+        try {
+            id = gameService.createRoom(username);
+        } catch (Exception e) {
+            e.printStackTrace();
+            // todo: return error code, disconnection to server
+        }
     }
 
     public void leaveRoom(int roomId, String username) throws Exception {
@@ -105,4 +114,16 @@ public class ServerService {
         gameService.gameExit(roomId);
     }
 
+    @Override
+    public void run() {
+        while (true) {
+            try {
+                Thread.sleep(1000);
+                heartbeatService.clearCounter(username);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
 }

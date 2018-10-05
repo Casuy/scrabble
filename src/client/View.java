@@ -29,8 +29,7 @@ public class View extends Application {
         webEngine.setJavaScriptEnabled(true);
 
 //        webEngine.load("http://localhost:4200");
-        webEngine.load(this.getClass().getResource("/ui/index.html").toExternalForm());
-
+        webEngine.load(this.getClass().getResource("./ui/index.html").toExternalForm());
         webEngine.getLoadWorker().stateProperty().addListener(
                 (observable, oldState, newState) -> {
                     if (newState == Worker.State.SUCCEEDED) {
