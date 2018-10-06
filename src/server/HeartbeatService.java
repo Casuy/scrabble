@@ -44,16 +44,16 @@ public class HeartbeatService extends UnicastRemoteObject implements IHeartbeatS
     }
 
     public ArrayList<String> getDeadUsernames() {
-        ArrayList<String> deadClients = new ArrayList<>();
+        ArrayList<String> deadUsers = new ArrayList<>();
         counters.forEach((k, v) -> {
-            if (v >= 3) {
-                deadClients.add(k);
+            if (v > 3) {
+                deadUsers.add(k);
             }
         });
-        deadClients.forEach(name -> {
+        deadUsers.forEach(name -> {
             counters.remove(name);
         });
-        return deadClients;
+        return deadUsers;
     }
 
 }

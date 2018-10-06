@@ -23,10 +23,6 @@ public class Server extends Thread {
 
     }
 
-    public Server() {
-        super();
-    }
-
     private Registry createRegistry() {
         Registry registry = null;
         try {
