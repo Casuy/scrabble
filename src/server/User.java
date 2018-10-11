@@ -14,7 +14,7 @@ public class User {
     private boolean inRoom = false;
     private boolean inGame = false;
 
-    private transient int id = 0;
+    private transient int roomId = 0;
 
 
     public User(String username) {
@@ -35,13 +35,13 @@ public class User {
 
     public void enterRoom(int id) {
         this.inRoom = true;
-        this.id = id;
+        this.roomId = id;
         pushUserListUpdate();
     }
 
     public void leaveRoom() {
         this.inRoom = false;
-        this.id = 0;
+        this.roomId = 0;
         pushUserListUpdate();
     }
 
@@ -74,8 +74,8 @@ public class User {
         return name;
     }
 
-    public int getId() {
-        return id;
+    public int getRoomId() {
+        return roomId;
     }
 
     public Boolean getInRoomState() {

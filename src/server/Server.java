@@ -57,14 +57,14 @@ public class Server extends Thread {
                     try {
                         User user = userService.getUserByUsername(username);
                         if (user.getInGameState()) {
-                            gameService.gameExit(user.getId());
+                            gameService.gameExit(user.getRoomId());
                         }
                         if (user.getInRoomState()) {
-                            gameService.leaveRoom(user.getId(), username);
+                            gameService.leaveRoom(user.getRoomId(), username);
                         }
                         userService.exit(username);
-                    } catch (Exception e) {
-                        log.warning(e.getMessage());
+                    } catch (Exception ignore) {
+//                        log.warning(e.getMessage());
                     }
                     userService.getClients().remove(username, userService.getClientByUsername(username));
                 });
