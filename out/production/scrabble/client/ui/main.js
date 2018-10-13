@@ -23,6 +23,69 @@ webpackEmptyAsyncContext.id = "./src/$$_lazy_route_resource lazy recursive";
 
 /***/ }),
 
+/***/ "./src/app/alert/alert.component.css":
+/*!*******************************************!*\
+  !*** ./src/app/alert/alert.component.css ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ".backdrop {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  background-color: rgba(255, 255, 255, .75);\n  display: flex;\n  flex-flow: column nowrap;\n  justify-content: center;\n  align-items: center;\n}\n\n.modal {\n  margin-top: -8px;\n  height: 78px;\n  width: 225px;\n  background-color: white;\n  border: 1px solid #999999;\n  box-shadow: 0 0 32px 2px #eeeeee;\n  color: #333333;\n  font-size: 13px;\n  line-height: 78px;\n  text-align: center;\n}\n"
+
+/***/ }),
+
+/***/ "./src/app/alert/alert.component.html":
+/*!********************************************!*\
+  !*** ./src/app/alert/alert.component.html ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"backdrop\">\n  <div class=\"modal\">\n    Cannot connect to the server.\n  </div>\n</div>\n"
+
+/***/ }),
+
+/***/ "./src/app/alert/alert.component.ts":
+/*!******************************************!*\
+  !*** ./src/app/alert/alert.component.ts ***!
+  \******************************************/
+/*! exports provided: AlertComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AlertComponent", function() { return AlertComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var AlertComponent = /** @class */ (function () {
+    function AlertComponent() {
+    }
+    AlertComponent.prototype.ngOnInit = function () {
+    };
+    AlertComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-alert',
+            template: __webpack_require__(/*! ./alert.component.html */ "./src/app/alert/alert.component.html"),
+            styles: [__webpack_require__(/*! ./alert.component.css */ "./src/app/alert/alert.component.css")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], AlertComponent);
+    return AlertComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/app.component.css":
 /*!***********************************!*\
   !*** ./src/app/app.component.css ***!
@@ -41,7 +104,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ng-container [ngSwitch]=\"ps.page\">\n  <app-login-page *ngSwitchCase=\"'login'\"></app-login-page>\n  <app-lobby-page *ngSwitchCase=\"'lobby'\"></app-lobby-page>\n  <app-game-page *ngSwitchCase=\"'game'\"></app-game-page>\n  <app-result-page *ngSwitchCase=\"'result'\"></app-result-page>\n</ng-container>\n"
+module.exports = "<ng-container [ngSwitch]=\"ps.page\">\n  <app-login-page *ngSwitchCase=\"'login'\"></app-login-page>\n  <app-lobby-page *ngSwitchCase=\"'lobby'\"></app-lobby-page>\n  <app-game-page *ngSwitchCase=\"'game'\"></app-game-page>\n  <app-result-page *ngSwitchCase=\"'result'\"></app-result-page>\n</ng-container>\n<app-alert *ngIf=\"rs.showDisconnectedAlert\">\n</app-alert>\n"
 
 /***/ }),
 
@@ -57,6 +120,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppComponent", function() { return AppComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _page_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../page.service */ "./src/page.service.ts");
+/* harmony import */ var _remote_remote_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../remote/remote.service */ "./src/remote/remote.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -68,9 +132,11 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 };
 
 
+
 var AppComponent = /** @class */ (function () {
-    function AppComponent(ps) {
+    function AppComponent(ps, rs) {
         this.ps = ps;
+        this.rs = rs;
     }
     AppComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -78,7 +144,7 @@ var AppComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./app.component.html */ "./src/app/app.component.html"),
             styles: [__webpack_require__(/*! ./app.component.css */ "./src/app/app.component.css")]
         }),
-        __metadata("design:paramtypes", [_page_service__WEBPACK_IMPORTED_MODULE_1__["PageService"]])
+        __metadata("design:paramtypes", [_page_service__WEBPACK_IMPORTED_MODULE_1__["PageService"], _remote_remote_service__WEBPACK_IMPORTED_MODULE_2__["RemoteService"]])
     ], AppComponent);
     return AppComponent;
 }());
@@ -107,12 +173,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _contextmenu_contextmenu_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./contextmenu/contextmenu.component */ "./src/app/contextmenu/contextmenu.component.ts");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
 /* harmony import */ var _result_page_result_page_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./result-page/result-page.component */ "./src/app/result-page/result-page.component.ts");
+/* harmony import */ var _alert_alert_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./alert/alert.component */ "./src/app/alert/alert.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -134,7 +202,8 @@ var AppModule = /** @class */ (function () {
                 _lobby_page_lobby_page_component__WEBPACK_IMPORTED_MODULE_5__["LobbyPageComponent"],
                 _game_page_game_page_component__WEBPACK_IMPORTED_MODULE_6__["GamePageComponent"],
                 _contextmenu_contextmenu_component__WEBPACK_IMPORTED_MODULE_7__["ContextmenuComponent"],
-                _result_page_result_page_component__WEBPACK_IMPORTED_MODULE_9__["ResultPageComponent"]
+                _result_page_result_page_component__WEBPACK_IMPORTED_MODULE_9__["ResultPageComponent"],
+                _alert_alert_component__WEBPACK_IMPORTED_MODULE_10__["AlertComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
@@ -231,7 +300,7 @@ var ContextmenuComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".container {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  display: flex;\n  flex-flow: row nowrap;\n  justify-content: flex-start;\n  align-items: center;\n  padding: 18px;\n}\n\nsection.board {\n  margin: 0 18px;\n}\n\n.board-row {\n  display: flex;\n  flex-flow: row nowrap;\n}\n\n.board-row:first-child .board-slot {\n  border-top-width: 1px;\n}\n\n.board-slot {\n  height: 24px;\n  width: 24px;\n  display: inline-block;\n  background-color: #fcfaf3;\n  border: 1px solid rgba(11, 16, 19, 0.68);\n  border-top-width: 0;\n  border-right-width: 0;\n  text-align: center;\n  line-height: 24px;\n}\n\n.board-slot:last-child {\n  border-right-width: 1px;\n}\n\n.board-slot-focus {\n  background-color: rgb(189, 192, 186);\n}\n\n.sidebar {\n  display: flex;\n  height: 480px;\n  width: 100%;\n  flex-flow: column nowrap;\n  /*padding: 18px 12px 0 0;*/\n  padding-right: 12px;\n}\n\n.game-user-list {\n  width: 100%;\n  font-size: 12px;\n  line-height: 18px;\n}\n\n.game-user-list th {\n  text-align: left;\n  color: #666666;\n}\n\n.game-user-list .game-user-list-heading {\n  color: initial;\n  font-size: 14px;\n  font-weight: bold;\n  text-align: center;\n  padding-bottom: 16px;\n  /*margin-left: -4px;*/\n}\n\n.aside-block {\n  font-size: 12px;\n  border-radius: 4px;\n  border: 1px solid #dddddd;\n  margin: 0 8px 24px 8px;\n  background-color: #f9f9f9;\n  padding: 12px;\n  overflow: hidden;\n}\n\n.aside-center-block {\n  display: flex;\n  flex-flow: column nowrap;\n  justify-content: center;\n  align-items: center;\n}\n\n.vote-block {\n  line-height: 24px;\n  font-size: 13px;\n}\n\n.vote-block-word {\n  cursor: pointer;\n  font-size: 16px;\n  padding: 4px 4px;\n}\n\n.vote-block-word-active {\n  font-weight: bold;\n}\n\n.vote-block-actions {\n\n}\n"
+module.exports = ".container {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  display: flex;\n  flex-flow: row nowrap;\n  justify-content: flex-start;\n  align-items: center;\n  padding: 18px;\n}\n\nsection.board {\n  margin: 0 18px;\n}\n\n.board-row {\n  display: flex;\n  flex-flow: row nowrap;\n}\n\n.board-row:first-child .board-slot {\n  border-top-width: 1px;\n}\n\n.board-slot {\n  height: 24px;\n  width: 24px;\n  display: inline-block;\n  background-color: #fcfaf3;\n  border: 1px solid rgba(11, 16, 19, 0.68);\n  border-top-width: 0;\n  border-right-width: 0;\n  text-align: center;\n  line-height: 24px;\n}\n\n.board-slot:last-child {\n  border-right-width: 1px;\n}\n\n.board-slot-focus {\n  background-color: rgb(189, 192, 186);\n}\n\n.sidebar {\n  display: flex;\n  height: 480px;\n  width: 100%;\n  flex-flow: column nowrap;\n  /*padding: 18px 12px 0 0;*/\n  padding-right: 12px;\n}\n\n.game-user-list {\n  width: 100%;\n  font-size: 12px;\n  line-height: 18px;\n}\n\n.game-user-list th {\n  text-align: left;\n  color: #666666;\n}\n\n.game-user-list .game-user-list-heading {\n  color: initial;\n  font-size: 14px;\n  font-weight: bold;\n  text-align: center;\n  padding-bottom: 16px;\n  /*margin-left: -4px;*/\n}\n\n.aside-block {\n  font-size: 12px;\n  border-radius: 4px;\n  border: 1px solid #dddddd;\n  margin: 0 8px 24px 8px;\n  background-color: #f9f9f9;\n  padding: 12px;\n  overflow: hidden;\n}\n\n.aside-center-block {\n  display: flex;\n  flex-flow: column nowrap;\n  justify-content: center;\n  align-items: center;\n}\n\n.vote-block {\n  line-height: 24px;\n  font-size: 13px;\n}\n\n.vote-block-word {\n  cursor: pointer;\n  font-size: 15px;\n  padding: 4px 8px;\n  border-radius: 4px;\n  border: 1px solid rgba(0, 0, 0, .75);\n}\n\n.vote-block-word-active {\n  background-color: rgba(0, 0, 0, .75);\n  color: white;\n}\n\n.vote-block-actions {\n\n}\n"
 
 /***/ }),
 
@@ -242,7 +311,7 @@ module.exports = ".container {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bo
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"container\" *ngIf=\"rs.gameBoard\">\n  <section class=\"board\">\n    <div class=\"board-row\" *ngFor=\"let row of rs.gameBoard.rows; let y=index\">\n      <div class=\"board-slot\"\n           *ngFor=\"let slot of row; let x=index\"\n           [class.board-slot-focus]=\"selectedSlot===slot\"\n           (mousedown)=\"focus($event, x, y)\">\n        {{slot.letter}}\n      </div>\n    </div>\n  </section>\n\n  <!-- right side -->\n  <aside class=\"sidebar\">\n    <section class=\"aside-block\" style=\"position: fixed;top: 100vh;left: 100vw;\">\n      <input type=\"text\" autofocus (input)=\"onKeyDown(input)\" #input (blur)=\"$event.preventDefault()\">\n    </section>\n    <!-- vote board-->\n    <section class=\"aside-block aside-center-block vote-block\" [style.height.px]=\"128\">\n      <div *ngIf=\"rs.game.vote && rs.game.vote.active; then inVoteStage else notInVoteStage\"></div>\n      <!-- vote active -->\n      <ng-template #inVoteStage>\n        <!-- vote for others-->\n        <ng-container *ngIf=\"rs.game.activeUser != rs.username\">\n          <div>Choose the correct words:</div>\n          <div>\n          <span *ngIf=\"rs.game.vote.wordA; let w\"\n                (mousedown)=\"voteSelection.toggle(w)\"\n                class=\"vote-block-word\"\n                [class.vote-block-word-active]=\"voteSelection.isActive(w)\">{{w}}</span>\n            <ng-container *ngIf=\"rs.game.vote.wordB!=rs.game.vote.wordA; \">\n              <ng-container *ngIf=\"rs.game.vote.wordB; let w\">\n                <span>, </span>\n                <span (mousedown)=\"voteSelection.toggle(w)\"\n                      class=\"vote-block-word\"\n                      [class.vote-block-word-active]=\"voteSelection.isActive(w)\">{{w}}</span>\n              </ng-container>\n            </ng-container>\n          </div>\n          <div style=\"display: flex; flex-flow: row nowrap; margin-top: 12px; margin-bottom: -8px\">\n            <div style=\"cursor: pointer;\" (click)=\"rs.gameVote(voteSelection.list)\">Vote</div>\n          </div>\n        </ng-container>\n        <!-- vote for current user -->\n        <div style=\"color: #666666;\" *ngIf=\"rs.game.activeUser == rs.username\">\n          Waiting others to vote...\n        </div>\n      </ng-template>\n      <!-- vote inactive -->\n      <ng-template #notInVoteStage>\n        <div style=\"color: #666666;\">\n          No vote activity now.\n        </div>\n      </ng-template>\n    </section>\n    <!-- scoreboard-->\n    <section class=\"aside-block\">\n      <table class=\"game-user-list\">\n        <thead>\n        <tr>\n          <!--<th></th>-->\n          <th colspan=\"3\" class=\"game-user-list-heading\">\n            Scoreboard\n            <!--<div style=\"width: 100%; height: 8px; border-bottom: 1px solid #666666;\"></div>-->\n          </th>\n        </tr>\n        <tr>\n          <th></th>\n          <th>Name</th>\n          <th>Score</th>\n        </tr>\n        </thead>\n        <tbody>\n        <tr *ngFor=\"let u of rs.game.users\">\n          <td style=\"width: 22px;\"><span *ngIf=\"rs.game.activeUser == u.name\">→</span></td>\n          <td>{{u.name}}</td>\n          <td>{{u.score}}</td>\n        </tr>\n        </tbody>\n      </table>\n    </section>\n\n    <section>\n      <button (click)=\"submit()\">Submit</button>\n      <button (click)=\"pass()\">Pass</button>\n      <button (click)=\"rs.gameExit()\">Exit</button>\n    </section>\n\n  </aside>\n</section>\n\n"
+module.exports = "<section class=\"container\" *ngIf=\"rs.gameBoard\">\n  <section class=\"board\">\n    <div class=\"board-row\" *ngFor=\"let row of rs.gameBoard.rows; let y=index\">\n      <div class=\"board-slot\"\n           *ngFor=\"let slot of row; let x=index\"\n           [class.board-slot-focus]=\"selectedSlot===slot\"\n           (mousedown)=\"focus($event, x, y)\">\n        {{slot.letter}}\n      </div>\n    </div>\n  </section>\n\n  <!-- right side -->\n  <aside class=\"sidebar\">\n    <!-- input hack-->\n    <section class=\"aside-block\" style=\"position: fixed;top: 100vh;left: 100vw;\">\n      <input type=\"text\" autofocus (input)=\"onKeyDown(input)\" #input (blur)=\"$event.preventDefault()\">\n    </section>\n    <!-- username -->\n    <section style=\"padding: 12px;margin-bottom: 12px\">\n      <!--<span>Your name: </span>-->\n      <span style=\"font-weight: bold\">{{rs.username}}</span>\n    </section>\n    <!-- vote board-->\n    <section class=\"aside-block aside-center-block vote-block\" [style.height.px]=\"128\">\n      <div *ngIf=\"rs.game.vote && rs.game.vote.active; then inVoteStage else notInVoteStage\"></div>\n      <!-- vote active -->\n      <ng-template #inVoteStage>\n        <!-- vote for others-->\n        <ng-container *ngIf=\"rs.game.activeUser != rs.username\">\n          <div style=\"margin-bottom: 8px;\">Choose the correct words:</div>\n          <div>\n            <div *ngIf=\"rs.game.vote.wordA; let w\"\n                 (mousedown)=\"voteSelection.toggle(w)\"\n                 class=\"vote-block-word\"\n                 [class.vote-block-word-active]=\"voteSelection.isActive(w)\">{{w}}\n            </div>\n            <ng-container *ngIf=\"rs.game.vote.wordB!=rs.game.vote.wordA; \">\n              <ng-container *ngIf=\"rs.game.vote.wordB; let w\">\n                <!--<div>,</div>-->\n                <div (mousedown)=\"voteSelection.toggle(w)\"\n                     class=\"vote-block-word\"\n                     [class.vote-block-word-active]=\"voteSelection.isActive(w)\">{{w}}\n                </div>\n              </ng-container>\n            </ng-container>\n          </div>\n          <div style=\"display: flex; flex-flow: row nowrap; margin-top: 12px; margin-bottom: -8px\">\n            <div style=\"cursor: pointer;\" (click)=\"rs.gameVote(voteSelection.list)\">Vote</div>\n          </div>\n        </ng-container>\n        <!-- vote for current user -->\n        <div style=\"color: #666666;\" *ngIf=\"rs.game.activeUser == rs.username\">\n          Waiting others to vote...\n        </div>\n      </ng-template>\n      <!-- vote inactive -->\n      <ng-template #notInVoteStage>\n        <div *ngIf=\"currentUserTurn\">\n          It's your turn.\n        </div>\n        <div *ngIf=\"!currentUserTurn\" style=\"color: #666666;\">\n          No vote activity now.\n        </div>\n      </ng-template>\n    </section>\n    <!-- scoreboard-->\n    <section class=\"aside-block\">\n      <table class=\"game-user-list\">\n        <thead>\n        <tr>\n          <!--<th></th>-->\n          <th colspan=\"3\" class=\"game-user-list-heading\">\n            Scoreboard\n            <!--<div style=\"width: 100%; height: 8px; border-bottom: 1px solid #666666;\"></div>-->\n          </th>\n        </tr>\n        <tr>\n          <th></th>\n          <th>Name</th>\n          <th>Score</th>\n        </tr>\n        </thead>\n        <tbody>\n        <tr *ngFor=\"let u of rs.game.users\">\n          <td style=\"width: 22px;\"><span *ngIf=\"rs.game.activeUser == u.name\">→</span></td>\n          <td>{{u.name}}</td>\n          <td>{{u.score}}</td>\n        </tr>\n        </tbody>\n      </table>\n    </section>\n\n    <section>\n      <button (click)=\"submit()\">Submit</button>\n      <button (click)=\"pass()\">Pass</button>\n      <button (click)=\"rs.gameExit()\">Exit</button>\n    </section>\n\n  </aside>\n</section>\n\n"
 
 /***/ }),
 
@@ -292,6 +361,9 @@ var Selection = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    Selection.prototype.clear = function () {
+        this.s.clear();
+    };
     return Selection;
 }());
 var GamePageComponent = /** @class */ (function () {
@@ -301,14 +373,20 @@ var GamePageComponent = /** @class */ (function () {
         this.voteSelection = new Selection();
         // console.table(this.board);
     }
+    Object.defineProperty(GamePageComponent.prototype, "currentUserTurn", {
+        get: function () {
+            return this.rs.isCurrentUser(this.rs.game.activeUser);
+        },
+        enumerable: true,
+        configurable: true
+    });
     GamePageComponent.prototype.onKeyDown = function (input) {
         var str = input.value;
         var key = str.charAt(str.length - 1);
         var isLetter = !!key.match(/^[a-z]$/i);
         var slotHasLetter = this.selectedSlot.letter;
-        var currentUserTurn = this.rs.isCurrentUser(this.rs.game.activeUser);
         var voting = !!this.rs.game.vote && this.rs.game.vote.active;
-        if (isLetter && !slotHasLetter && currentUserTurn && !voting) {
+        if (isLetter && !slotHasLetter && this.currentUserTurn && !voting) {
             this.lastSelectedSlots.forEach(function (slot) { return slot.update(null); });
             this.lastSelectedSlots = [];
             this.selectedSlot.update(key);
@@ -328,6 +406,7 @@ var GamePageComponent = /** @class */ (function () {
     GamePageComponent.prototype.submit = function () {
         var pos = this.rs.gameBoard.getPos(this.lastModifiedSlot);
         this.rs.gameSubmit(pos.y, pos.x, this.lastModifiedSlot.letter);
+        this.voteSelection.clear();
     };
     GamePageComponent.prototype.pass = function () {
         this.rs.gameSubmit();
@@ -858,6 +937,7 @@ var RemoteService = /** @class */ (function () {
             clientAddrError: false,
             serverError: false
         };
+        this.showDisconnectedAlert = false;
         this.reactor = new _remoteServiceReactor__WEBPACK_IMPORTED_MODULE_2__["RemoteServiceReactor"](this, ps, zone);
     }
     Object.defineProperty(RemoteService.prototype, "inRoom", {
@@ -1055,6 +1135,12 @@ var RemoteServiceReactor = /** @class */ (function () {
         var _this = this;
         this.zone.run(function () {
             _this.rs.invitation = JSON.parse(invJson);
+        });
+    };
+    RemoteServiceReactor.prototype.alertServerDisconnected = function () {
+        var _this = this;
+        this.zone.run(function () {
+            _this.rs.showDisconnectedAlert = true;
         });
     };
     return RemoteServiceReactor;

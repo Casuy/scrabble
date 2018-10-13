@@ -14,6 +14,7 @@ public class ServerService extends Thread {
     private static ServerService ssvc;
     private static Gson gson = new Gson();
     private static Logger log = Logger.getLogger("Client Log");
+    private static ClientAgent clientAgent = ClientAgent.getInstance();
 
     private String serverHost;
     private int serverPort;
@@ -117,8 +118,8 @@ public class ServerService extends Thread {
                 heartbeatService.clearCounter(username);
             } catch (Exception e) {
                 log.warning(e.getMessage());
+                clientAgent.alertServerDisconnected();
                 break;
-                //todo: show error msg
             }
         }
 

@@ -81,9 +81,8 @@ public class Room {
             if (c != null) {
                 try {
                     c.updateRoomState(toJson());
-                } catch (Exception e) {
-                    log.warning(e.getMessage());
-                    //todo: remove client
+                } catch (Exception ignore) {
+//                    log.warning(e.getMessage());
                 }
             }
         });

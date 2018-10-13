@@ -73,5 +73,8 @@ public class ClientAgent extends UnicastRemoteObject implements IClientAgent {
         eval(String.format("updateInvitation('%s')", json));
     }
 
+    public void alertServerDisconnected() {
+        eval(String.format("alertServerDisconnected()"));
+    }
 
 }

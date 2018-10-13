@@ -132,9 +132,8 @@ public class Game {
             if (c != null) {
                 try {
                     c.updateGameState(toJson());
-                } catch (Exception e) {
-                    log.warning(e.getMessage());
-                    //todo: remove client
+                } catch (Exception ignore) {
+//                    log.warning(e.getMessage());
                 }
             }
         });

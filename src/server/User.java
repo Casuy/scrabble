@@ -59,9 +59,8 @@ public class User {
         userService.getAllClients().forEach(client -> {
             try {
                 client.updateUserList(toJson());
-            } catch (Exception e) {
-                log.warning(e.getMessage());
-                //todo: remove client
+            } catch (Exception ignore) {
+//                log.warning(e.getMessage());
             }
         });
     }
