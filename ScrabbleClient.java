@@ -8,6 +8,7 @@ import java.net.UnknownHostException;
 
 
 /**
+  * @author Kuan Tian
   * 2018-09-20
   */
 
@@ -25,6 +26,7 @@ public class ScrabbleClient {
 				socket = new Socket(ServerAd, port);
 				pw = new PrintWriter(socket.getOutputStream());
 				mebr = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				new Thread(new Read()).start();
 			} catch (SocketException e) {
 				System.out.println("Error: The host is unreachable!");
 				System.exit(0);
@@ -37,49 +39,21 @@ public class ScrabbleClient {
 			}
 		}
 		
-		public String listen() {
-			String a = null;
-			while(true) {
-				try {
-					a = mebr.readLine();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				if(a!=null) break;
-			}
-			return a;
-		}
 
 		// send the command to the server and get reply
-		public String operate(String word) {
+		public void operate(String word) {
 			String line;
-			String message;
 
-			try {
+			while (true) {
+				line = word;
+				if (line != null && line.length() > 0) {
+					pw.println(line);
+					pw.flush();
 
-				while (true) {
-					line = word;
-					if (line != null && line.length() > 0) {
-						pw.println(line);
-						pw.flush();
-
-					}
-					if ((message = mebr.readLine()) != null) {
-						return message;
-					}
-					break;
 				}
-			} catch (SocketException e) {
-				System.out.println("Error: The host is unreachable!");
-				System.exit(0);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				break;
 			}
 
-			terminate();
-			return null;
 
 		}
 
@@ -94,6 +68,28 @@ public class ScrabbleClient {
 				e.printStackTrace();
 			}
 		}
+		
+		class Read implements Runnable{
+			String message =null;
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				while(true) {
+					try {
+						message= mebr.readLine();
+						if(message!=null) ScrabblePanel.showMessage(message);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						break;
+					}
+					
+				}
+			}
+			
+		}
+		
 	}
 
 

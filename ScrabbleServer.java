@@ -16,7 +16,7 @@ public class ScrabbleServer {
 	private ServerSocket server;
 	private Socket socket;
 	private static int port=55566;
-	private ArrayList<ScrabblePlayer> pList= new ArrayList<ScrabblePlayer>();
+	private ArrayList<ScrabblePlayer> pList= new ArrayList<ScrabblePlayer>(); //store the player list
 	
 	public ScrabbleServer(){
 		try {
@@ -56,7 +56,7 @@ public class ScrabbleServer {
 		public void run() {
 			String[] line;
 			ScrabblePlayer a = new ScrabblePlayer("TOM");
-			a.setPlayer(br, pw);
+			a.setPlayer(soc);
 
 			try {
 				while(true){
@@ -73,14 +73,15 @@ public class ScrabbleServer {
 							pList.add(a);
 							a.setScore(0);
 						}
-						pw.println("Game Start");
-						pw.flush();
 						System.out.println(pList.size());
-						if(pList.size()>0) {
-							pw.flush();
+						if(pList.size()>1) {
 							ScrabbleGame game = new ScrabbleGame(pList);
 							game.play();
 							pList = new ArrayList<ScrabblePlayer>();
+						}
+						else {
+							pw.println("The player number now is"+pList.size());
+							pw.flush();
 						}
 					}
 					else {

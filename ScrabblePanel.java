@@ -26,11 +26,11 @@ public class ScrabblePanel {
 	private JFrame frmScrabble;
 	private JPanel gameBoard;
 	private JPanel menu;
-	private JTextField[][] board;
+	private static JTextField[][] board;
 	private JButton btnInput;
 	private JButton btnVoteWord;
 	private JButton btnVote;
-	private JTextArea MessageBoard;
+	private static JTextArea MessageBoard;
 	
 	private JButton btnPlay;
 	private ScrabbleClient sc;
@@ -135,7 +135,7 @@ public class ScrabblePanel {
 		frmScrabble.getContentPane().add(dig);
 		dig.setLayout(new GridLayout(0, 1, 0, 0));
 
-		// create 19*19 textfields in the gameboard
+		// create 20*20 textfields in the gameboard
 		board = new JTextField[20][20];
 		for (int i = 0; i < 20; i++) {
 			for (int j = 0; j < 20; j++) {
@@ -201,8 +201,8 @@ public class ScrabblePanel {
 		event();
 	}
 		
-	//加字母到特定位置
-	public void setWord(String operation) {
+	// input letter
+	public static void setWord(String operation) {
 		String[] operations = operation.split(" ");
 		int x = Integer.parseInt(operations[1]) - 1;
 		int y = operations[0].toUpperCase().toCharArray()[0] - 'A';
@@ -210,9 +210,12 @@ public class ScrabblePanel {
 		board[x][y].setText(String.valueOf(a));
 	}
 	
-	//将各类message展示在消息板上
-	public void showMessage(String message) {
+	// display the messages on the message board
+	public static void showMessage(String message) {
 		String[] messages = message.split("::@:");
+		if(messages[0].equals("Set")) {
+			setWord(messages[1]);
+		}
 		if(messages[0].equals("Vote")) {
 			MessageBoard.append(messages[1]+" is voting for the word "+messages[2]+"\r\n");
 		}
@@ -224,9 +227,8 @@ public class ScrabblePanel {
 		}
 	}
 
-	//各个button的点击事件
 	private void event(){
-		//input button弹出窗口输入字符
+		// create new window for input
 		btnInput.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -245,8 +247,8 @@ public class ScrabblePanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				String message = sc.operate("Play::@:");
-				showMessage(message);
+				sc.operate("Play::@:");
+				
 			}
 		});	
 		btnPass.addActionListener(new ActionListener() {
@@ -254,8 +256,8 @@ public class ScrabblePanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				String message = sc.operate("Pass::@:");
-				showMessage(message);
+				sc.operate("Pass::@:");
+				
 			}
 		});
 		btnVote.addActionListener(new ActionListener() {
@@ -263,14 +265,14 @@ public class ScrabblePanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				String message = sc.operate("VoteYes::@:");
-				showMessage(message);
+				sc.operate("VoteYes::@:");
+				
 			}
 		});
 	}
 	
 	
-	//添加字母的窗口
+	// the window for input letter
 	class InputField {
 
 		private JFrame frame;
@@ -321,9 +323,7 @@ public class ScrabblePanel {
 			btnInput.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					String operation = "Set::@:"+col.getText()+" "+row.getText()+" "+letter.getText();
-					String message=sc.operate(operation);
-					setWord(col.getText()+" "+row.getText()+" "+letter.getText());
-					showMessage(message);
+					sc.operate(operation);					
 					frame.dispose();
 				}
 			});
@@ -339,7 +339,7 @@ public class ScrabblePanel {
 		}		
 	}
 	
-	
+	//the window for create a vote
 	class Vote {
 
 		private JFrame frame;
@@ -409,8 +409,8 @@ public class ScrabblePanel {
 			btnConfirm.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					String operation = "Vote::@:"+text_x1.getText()+" "+text_x2.getText()+" "+text_y1.getText()+" "+text_y2.getText();
-					String message = sc.operate(operation);
-					showMessage(message);
+					sc.operate(operation);
+					
 					frame.dispose();
 				}
 			});
