@@ -7,7 +7,7 @@ public interface IUserService extends Remote {
 
     boolean isUser(String username) throws RemoteException;
 
-    void login(String username, String clientHost, int clientPort) throws RemoteException;
+    void login(String username, String clientHost, int clientPort) throws Exception;
 
     void exit(String username) throws RemoteException;
 

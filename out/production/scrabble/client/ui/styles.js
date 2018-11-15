@@ -539,7 +539,7 @@ if(false) {}
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/casuy/Course/2018-SM2-CS/Distributed System/ass2/ui/src/styles.css */"./src/styles.css");
+module.exports = __webpack_require__(/*! /Users/casuy/Course/2018-SM2-CS/Distributed System/DS proj2/ass2/ui/src/styles.css */"./src/styles.css");
 
 
 /***/ })

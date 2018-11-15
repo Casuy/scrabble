@@ -43,16 +43,16 @@ public class UserService extends UnicastRemoteObject implements IUserService {
     }
 
     @Override
-    public void login(String username, String clientHost, int clientPort) throws RemoteException {
-        try {
-            Registry registry = LocateRegistry.getRegistry(clientHost, clientPort);
-            IClientAgent client = (IClientAgent) registry.lookup("Client");
-            clients.put(username, client);
-            User user = new User(username);
-            user.login();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void login(String username, String clientHost, int clientPort) throws Exception {
+//        try {
+        Registry registry = LocateRegistry.getRegistry(clientHost, clientPort);
+        IClientAgent client = (IClientAgent) registry.lookup("Client");
+        clients.put(username, client);
+        User user = new User(username);
+        user.login();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//    }
 
     }
 
